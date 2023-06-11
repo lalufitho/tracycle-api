@@ -92,7 +92,9 @@ router.delete('/transaksi/:id', async(req, res) => {
     }
 });
 
-app.use(`/.netlify/functions/index`, router);
+router.get('/hello', (req, res) => res.send('Hello World!'));
+
+app.use('/api/', router);
 
 module.exports = app;
 module.exports.handler = serverless(app);
