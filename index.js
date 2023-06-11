@@ -2,15 +2,17 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const app = express();
+const router = express.Router();
 const port = 3000;
 const Transaksi = require('./model/transaksi');
 const response = require('./config/response');
 const ObjectId = require('mongodb').ObjectId;
+const serverless = require("serverless-http");
 require('./config/db');
 
-app.use(bodyParser.json());
+router.use(bodyParser.json());
 
-app.get('/transaksi', async(req, res) => {
+router.get('/transaksi', async(req, res) => {
     try {
         const data = await Transaksi.find();
         // console.log(data);
@@ -21,7 +23,7 @@ app.get('/transaksi', async(req, res) => {
     }
 });
 
-app.get('/transaksi/:id', async(req, res) => {
+router.get('/transaksi/:id', async(req, res) => {
     try {
         const id = req.params.id
         const data = await Transaksi.find({ _id: new ObjectId(`${id}`) });
@@ -31,7 +33,7 @@ app.get('/transaksi/:id', async(req, res) => {
     }
 });
 
-app.post('/transaksi', [
+router.post('/transaksi', [
     body('nama').notEmpty().withMessage('Nama is required'),
     body('alamat').notEmpty().withMessage('Alamat is required'),
     body('email').notEmpty().withMessage('Email is required'),
@@ -71,7 +73,7 @@ app.post('/transaksi', [
     }
 });
 
-app.delete('/transaksi/:id', async(req, res) => {
+router.delete('/transaksi/:id', async(req, res) => {
     try {
         const id = req.params.id;
 
@@ -90,6 +92,11 @@ app.delete('/transaksi/:id', async(req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+app.use(`/.netlify/functions/api`, router);
+
+module.exports = app;
+module.exports.handler = serverless(app);
+
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`);
+// });
