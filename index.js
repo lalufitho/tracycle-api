@@ -1,18 +1,15 @@
-const bodyParser = require('body-parser');
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const app = express();
-const router = express.Router();
 const port = 3000;
 const Transaksi = require('./model/transaksi');
 const response = require('./config/response');
 const ObjectId = require('mongodb').ObjectId;
-const serverless = require("serverless-http");
 require('./config/db');
 
-router.use(bodyParser.json());
+app.use(express.json())
 
-router.get('/transaksi', async(req, res) => {
+app.get('/transaksi', async(req, res) => {
     try {
         const data = await Transaksi.find();
         // console.log(data);
@@ -23,7 +20,7 @@ router.get('/transaksi', async(req, res) => {
     }
 });
 
-router.get('/transaksi/:id', async(req, res) => {
+app.get('/transaksi/:id', async(req, res) => {
     try {
         const id = req.params.id
         const data = await Transaksi.find({ _id: new ObjectId(`${id}`) });
@@ -33,7 +30,7 @@ router.get('/transaksi/:id', async(req, res) => {
     }
 });
 
-router.post('/transaksi', [
+app.post('/transaksi', [
     body('nama').notEmpty().withMessage('Nama is required'),
     body('alamat').notEmpty().withMessage('Alamat is required'),
     body('email').notEmpty().withMessage('Email is required'),
@@ -49,9 +46,20 @@ router.post('/transaksi', [
             return;
         }
 
+        // Define hargaSampah
+        const hargaSampah = {
+            Plastik: 2000,
+            Kertas: 1000,
+            Logam: 5000,
+            Kaca: 3000,
+            Kaleng: 2000,
+            Kardus: 1500
+        };
+
         // Calculate total_harga
+        const jenisSampah = req.body.jenis_sampah;
         const beratSampah = req.body.berat_sampah;
-        const totalHarga = beratSampah * 2000;
+        const totalHarga = beratSampah * hargaSampah[jenisSampah];
 
         // Save the transaction
         const newTransaksi = new Transaksi({
@@ -73,7 +81,7 @@ router.post('/transaksi', [
     }
 });
 
-router.delete('/transaksi/:id', async(req, res) => {
+app.delete('/transaksi/:id', async(req, res) => {
     try {
         const id = req.params.id;
 
@@ -92,13 +100,6 @@ router.delete('/transaksi/:id', async(req, res) => {
     }
 });
 
-router.get('/hello', (req, res) => res.send('Hello World!'));
-
-app.use('/api/', router);
-
-module.exports = app;
-module.exports.handler = serverless(app);
-
-// app.listen(port, () => {
-//     console.log(`Example app listening on port ${port}`);
-// });
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+});
