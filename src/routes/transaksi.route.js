@@ -69,46 +69,46 @@ router.post('/', [
   body('jenisSampah').notEmpty().withMessage('Jenis sampah is required'),
   body('beratSampah').notEmpty().withMessage('Berat sampah is required'),
 ], async (req, res) => {
-  // try {
-  //   // Check for validation errors
-  //   const errors = validationResult(req)
-  //   if (!errors.isEmpty()) {
-  //     response(400, null, errors.array(), res)
-  //     return
-  //   }
+  try {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      response(400, null, errors.array(), res);
+      return;
+    }
 
-  // Define hargaSampah
-  const SAMPAH = {
-    plastik: 1000,
-    kertas: 1500,
-    logam: 2000,
-    kaca: 2500,
-    kaleng: 3000,
-    kardus: 3500,
-  };
+    // Define hargaSampah
+    const SAMPAH = {
+      plastik: 1000,
+      kertas: 1500,
+      logam: 2000,
+      kaca: 2500,
+      kaleng: 3000,
+      kardus: 3500,
+    };
 
-  // Calculate total_harga
-  const { jenisSampah } = req.body;
-  const { beratSampah } = req.body;
-  const totalHarga = beratSampah * SAMPAH[jenisSampah];
+    // Calculate total_harga
+    const { jenisSampah } = req.body;
+    const { beratSampah } = req.body;
+    const totalHarga = beratSampah * SAMPAH[jenisSampah];
 
-  // Save the transaction
-  const newTransaksi = new Transaksi({
-    nama: req.body.nama,
-    alamat: req.body.alamat,
-    email: req.body.email,
-    nohp: req.body.nohp,
-    jenisSampah: req.body.jenisSampah,
-    beratSampah,
-    totalHarga,
-  });
+    // Save the transaction
+    const newTransaksi = new Transaksi({
+      nama: req.body.nama,
+      alamat: req.body.alamat,
+      email: req.body.email,
+      nohp: req.body.nohp,
+      jenisSampah: req.body.jenisSampah,
+      beratSampah,
+      totalHarga,
+    });
 
-  const savedTransaksi = await newTransaksi.save();
+    const savedTransaksi = await newTransaksi.save();
 
-  response(200, savedTransaksi, 'Transaction created successfully', res);
-  // } catch (error) {
-  //   response(500, null, 'Error creating data', res)
-  // }
+    response(200, savedTransaksi, 'Transaction created successfully', res);
+  } catch (error) {
+    response(500, null, 'Error creating data', res);
+  }
 });
 
 router.delete('/:id', async (req, res) => {
