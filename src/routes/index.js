@@ -1,6 +1,7 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
 
-router.use('/transaksi', require('./transaksi.route'))
+const router = express.Router();
 
-module.exports = router
+router.use('/transaksi', require('./transaksi.route'));
+
+module.exports = router;
