@@ -4,6 +4,7 @@ const path = require('path');
 const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
+const serverless = require('serverless-http');
 
 const port = process.env.PORT || 3000;
 require('./config/db');
@@ -19,3 +20,5 @@ app.use('/', require('./routes'));
 app.listen(port, () => {
   console.log(`Server running at PORT ${port}...`);
 });
+
+module.exports.handler = serverless(app);
