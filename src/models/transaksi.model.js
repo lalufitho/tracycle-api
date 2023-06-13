@@ -1,4 +1,4 @@
-import mongoose, { model } from 'mongoose';
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -37,6 +37,6 @@ const TransaksiSchema = new Schema({
   },
 });
 
-const Transaksi = model('transaksi', TransaksiSchema);
+const Transaksi = mongoose.model('transaksi', TransaksiSchema);
 
-export default Transaksi;
+module.exports = Transaksi;

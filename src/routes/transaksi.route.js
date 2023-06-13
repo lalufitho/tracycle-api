@@ -4,7 +4,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ObjectId } = require('mongodb');
-const Transaksi = require('../models/transaksi.model').default;
+const Transaksi = require('../models/transaksi.model');
 const response = require('../utils/response');
 
 router.get('/', async (req, res) => {
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     // console.log(data);
     response(200, data, 'GET all transaction data success', res);
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     response(500, null, 'Error GET all transaction data', res);
   }
 });
