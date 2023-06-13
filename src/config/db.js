@@ -1,8 +1,22 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const uri = 'mongodb+srv://lalufitho:PVdjMBJebwuOBI8v@tracycle.mmqrdpc.mongodb.net/tracycle'
+const uri = 'mongodb+srv://lalufitho:PVdjMBJebwuOBI8v@tracycle.mmqrdpc.mongodb.net/tracycle';
 
-const tes = mongoose.connect(uri)
+const connect = async () => {
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+  }
+};
+
+connect();
 
 // const transaksi1 = new Transaksi({
 //     nama: 'Alfitra',
