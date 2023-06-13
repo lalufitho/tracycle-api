@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const Transaksi = new Schema({
+const TransaksiSchema = new Schema({
     nama: {
         type: String,
         required: true,
@@ -36,6 +36,6 @@ const Transaksi = new Schema({
     }
 });
 
-TransaksiModel = mongoose.model('transaksi', Transaksi)
+Transaksi = mongoose.model('transaksi', TransaksiSchema)
 
-module.exports = TransaksiModel
+module.exports = Transaksi

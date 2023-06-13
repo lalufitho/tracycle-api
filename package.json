@@ -2,11 +2,11 @@
     "name": "tra-be",
     "version": "1.0.0",
     "description": "",
-    "main": "app.js",
+    "main": "index.js",
     "scripts": {
-        "build": "nodemon app.js",
-        "start": "nodemon app.js",
-        "dev": "nodemon app.js",
+        "build": "webpack",
+        "start": "nodemon ./src/indexjs",
+        "dev": "nodemon ./src/index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -19,6 +19,10 @@
         "express-validator": "^7.0.1",
         "mongoose": "^7.2.3",
         "morgan": "^1.10.0",
-        "nodemon": "^2.0.22"
+        "nodemon": "^2.0.22",
+        "webpack": "^5.86.0"
+    },
+    "devDependencies": {
+        "webpack-cli": "^5.1.4"
     }
 }

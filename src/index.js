@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const port = process.env.PORT || 3000;
 const Transaksi = require('./models/transaksi');
-const response = require('./config/response');
+const response = require('./utils/response');
 const ObjectId = require('mongodb').ObjectId;
 require('./config/db');
 
@@ -105,5 +105,5 @@ app.delete('/transaksi/:id', async(req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running...`);
+    console.log(`Server running at PORT ${port}...`);
 });
