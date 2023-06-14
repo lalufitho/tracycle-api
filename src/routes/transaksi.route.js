@@ -50,9 +50,8 @@ router.get('/pdf/:id', async (req, res) => {
         },
       };
 
-      pdf.create(data, options).toBuffer(function(err, stream){
-        res.contentType("application/pdf");
-        res.send(stream);
+      pdf.create(data, options).toBuffer(function (err, stream) {
+        response(200, stream.toString('base64'), `Get PDF Success`, res);
       });      
     }
   });
