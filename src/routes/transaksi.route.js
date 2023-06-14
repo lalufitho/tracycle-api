@@ -29,6 +29,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.get('/pdf/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = await Transaksi.find({ _id: id });
+
+  res.render('invoice', { data: data[0] });
+});
+
 router.post('/', [
   body('nama').notEmpty().withMessage('Nama is required'),
   body('alamat').notEmpty().withMessage('Alamat is required'),
