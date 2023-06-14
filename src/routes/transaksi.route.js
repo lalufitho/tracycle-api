@@ -50,13 +50,10 @@ router.get('/pdf/:id', async (req, res) => {
         },
       };
 
-      pdf.create(data, options).toFile(`public/report-${id}.pdf`, (err, data) => {
-        if (err) {
-          res.send(err);
-        } else {
-          response(200, `report-${id}.pdf`, `GET transaction data by id ${id} successfully`, res);
-        }
-      });
+      pdf.create(data, options).toBuffer(function(err, stream){
+        res.contentType("application/pdf");
+        res.send(stream);
+      });      
     }
   });
 });
