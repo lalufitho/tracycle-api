@@ -23,38 +23,10 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const data = await Transaksi.find({ _id: id });
-    data.push(`/pdf/${id}`);
     response(200, data, `GET transaction data by id ${id} successfully`, res);
   } catch (error) {
     response(500, null, `Error GET transaction data by id ${id}`, res);
   }
-});
-
-router.get('/pdf/:id', async (req, res) => {
-  const { id } = req.params;
-  const data = await Transaksi.find({ _id: id });
-  ejs.renderFile(path.join(__dirname, '../pdf/', 'invoice.ejs'), {
-    data: data[0],
-  }, (err, data) => {
-    if (err) {
-      res.send(err);
-    } else {
-      const options = {
-        height: '11.25in',
-        width: '8.5in',
-        header: {
-          height: '20mm',
-        },
-        footer: {
-          height: '20mm',
-        },
-      };
-
-      pdf.create(data, options).toBuffer(function (err, stream) {
-        response(200, stream?.toString('base64') ?? stream, `Get PDF Success`, res);
-      });      
-    }
-  });
 });
 
 router.post('/', [
