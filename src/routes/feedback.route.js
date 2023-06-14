@@ -71,3 +71,5 @@ router.delete('/:id', async (req, res) => {
     response(500, null, `Error deleting feedback with ID ${req.params.id}`, res);
   }
 });
+
+module.exports = router;
