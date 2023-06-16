@@ -222,13 +222,20 @@
     crossorigin="anonymous"
   ></script>
   <script>
-    window.html2canvas = html2canvas;
-    const doc = new jsPDF('p', 'pt', 'a4');
-
-    doc.html(document.body, {
-      callback: function (pdf) {
-        pdf.save('invoice.pdf');
-      },
-    });
+    // Utility function to convert HTML to PDF using html2canvas and jsPDF
+    function generatePDF() {
+      const htmlContent = document.documentElement;
+      return html2canvas(htmlContent).then((canvas) => {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        const imageData = canvas.toDataURL('image/jpeg', 1.0);
+        const imageProps = doc.getImageProperties(imageData);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imageProps.height * pdfWidth) / imageProps.width;
+        doc.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        doc.save('invoice.pdf');
+      });
+    }
+    // Call the generatePDF function on page load or any other event
+    generatePDF();
   </script>
 </html>
